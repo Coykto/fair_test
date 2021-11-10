@@ -1,0 +1,41 @@
+version: '3.4'
+services:
+
+  db:
+    image: postgres:9.6-stretch
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: username
+      POSTGRES_DB: fair_db
+    volumes:
+      - ./pg_data:/var/lib/postgresql/data
+      - ./db_init:/docker-entrypoint-initdb.d
+    networks:
+      - fair_network
+
+  fair:
+    build: .
+    depends_on:
+      - db
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/usr/src/app
+    command: /bin/bash -c "python main.py"
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_PASSWORD: password
+      DB_USERNAME: username
+      DB_NAME: fair_db
+    networks:
+      - fair_network
+
+networks:
+  fair_network:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.31.0.0/16
