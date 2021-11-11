@@ -29,3 +29,13 @@
 ```
 python -m pytest
 ```
+
+### База данных
+Подразумевается, что в базе есть таблица
+```
+cars (
+  id serial primary index,
+  model varchar,
+  year int,
+)
+```
