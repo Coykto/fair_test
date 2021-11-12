@@ -34,7 +34,7 @@ python -m pytest
 Подразумевается, что в базе есть таблица
 ```
 cars (
-  id serial primary index,
+  id serial primary key,
   model varchar,
   year int,
 )
